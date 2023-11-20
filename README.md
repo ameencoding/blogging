@@ -1,6 +1,10 @@
 # Blogging
 Welcome to blogging, it's a free app 😁
 
+# Default username and password
+username: admin password: 123
+
+# About application 
 Each and every user must have a username and password.
 
 Each user must have a unique username.
