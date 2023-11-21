@@ -34,16 +34,6 @@ const btnSubmit = modelLogin.querySelector(".btn__submit");
 const activeUser = document.querySelector(".user");
 const btnLogout = activeUser.querySelector(".logout");
 
-const notice = document.querySelector(".alert");
-
-setTimeout(function () {
-  notice.classList.add("show__model");
-}, 1500);
-
-setTimeout(function () {
-  notice.classList.remove("show__model");
-}, 7500);
-
 let currentUser;
 let currentUsername;
 let currentUserId;
@@ -72,37 +62,8 @@ btnPosts.addEventListener("click", function () {
   }
 
   toggleModel(modelPosts, [form, modelMember, modelLogin, modelSignup]);
-
   empty.classList.remove("show__model");
-  modelPosts.innerHTML = membersPosts
-    .map((post) => {
-      return `<div class="post">
-           <div class="icon"></div>
-           <div class="author">
-            <p class="author__name">${post.memberName}</p>
-            <p class="message">${post.post}</p>
-          </div>
-          <button class="btn edit">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#000000"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="bevel"
-            >
-              <path
-                d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"
-              ></path>
-              <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
-            </svg>
-          </button>
-        </div>`;
-    })
-    .join("");
+  renderPosts();
 });
 
 btnMembers.addEventListener("click", function () {
@@ -175,6 +136,7 @@ btnLogout.addEventListener("click", function () {
   btnCreatePost.classList.remove("show__model");
   form.classList.remove("show__model");
   empty.classList.remove("show__model");
+  welcomeMessage.classList.remove("hide");
 
   // 1. Hide the (current) logout button
   this.style.display = "none";
@@ -269,6 +231,38 @@ const renderCurrentUser = function () {
   actions.style.display = "none";
 };
 
+const renderPosts = function () {
+  modelPosts.innerHTML = membersPosts
+    .map((post) => {
+      return `<div class="post">
+         <div class="icon"></div>
+         <div class="author">
+          <p class="author__name">${post.memberName}</p>
+          <p class="message">${post.post}</p>
+        </div>
+        <button class="btn edit">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#000000"
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-linejoin="bevel"
+          >
+            <path
+              d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"
+            ></path>
+            <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+          </svg>
+        </button>
+      </div>`;
+    })
+    .join("");
+};
+
 const generateAvatar = function () {
   // 1. random color for avatars
   activeUser.querySelector(".icon").style.backgroundColor =
@@ -280,7 +274,7 @@ const generateAvatar = function () {
     .toUpperCase();
 };
 
-// hanlde form input
+// form
 btnSubmitPost.addEventListener("click", function () {
   const post = form.querySelector("textarea").value;
   if (post === "") {
