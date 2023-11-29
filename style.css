@@ -275,7 +275,7 @@ main {
 }
 
 .form__create {
-  background-color: var(--dark--light);
+  background-color: #f1f3f5;
   width: fit-content;
   margin: 0 auto;
   padding: 12px;
@@ -299,7 +299,16 @@ main {
 .form__create .btn {
   background-color: var(--orange);
   align-self: flex-end;
-  padding: 8px 18px;
+  padding: 4px 8px;
+
+  display: grid;
+  place-content: center;
+}
+
+.form__create .btn svg {
+  height: 18px;
+  width: 18px;
+  stroke-width: 2px;
 }
 
 .form__create textarea {
@@ -384,9 +393,15 @@ main {
   scale: 0;
 }
 
-.blur {
-  filter: blur(4px);
+.hidden__btn {
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+}
+
+.empty__val {
+  /* feature plan NOT using right now! */
+  border-color: #eb5353 !important;
 }
 
 .flex {
@@ -405,9 +420,8 @@ main {
 }
 
 @media only screen and (max-width: 600px) {
-  header {
-    flex-direction: column;
-    gap: 12px;
+  .posts {
+    width: 100%;
   }
 
   .form__create {
@@ -418,9 +432,15 @@ main {
 }
 
 @media only screen and (max-width: 400px) {
+  header {
+    flex-direction: column;
+  }
   .model {
     width: 90%;
     right: 5%;
     left: 5%;
+  }
+  .form__create .btn {
+    margin-left: auto;
   }
 }

@@ -61,9 +61,8 @@ btnPosts.addEventListener("click", function () {
     return;
   }
 
-  toggleModel(modelPosts, [form, modelMember, modelLogin, modelSignup]);
-  empty.classList.remove("show__model");
   renderPosts();
+  empty.classList.remove("show__model");
 });
 
 btnMembers.addEventListener("click", function () {
@@ -103,7 +102,6 @@ btnSubmit.addEventListener("click", function () {
     hideModel(userInput, userPassword, modelLogin, 400);
     return;
   }
-
   const getUser = members.filter(
     (member) =>
       member.user === userInput.value && member.pass === userPassword.value
@@ -131,6 +129,7 @@ activeUser.addEventListener("mouseleave", function () {
 btnLogout.addEventListener("click", function () {
   isLogged = false;
   currentUserId = undefined;
+  toggleBtns(false, [btnMembers, btnPosts]);
 
   modelPosts.classList.remove("show__model");
   btnCreatePost.classList.remove("show__model");
@@ -200,8 +199,18 @@ const toggleModel = (current, others) => {
   current.classList.add("show__model");
 };
 
+const toggleBtns = function (state, btns) {
+  if (state) {
+    btns.forEach((btn) => btn.classList.remove("hidden__btn"));
+  } else {
+    btns.forEach((btn) => btn.classList.add("hidden__btn"));
+  }
+};
+
 const renderCurrentUser = function () {
   isLogged = true;
+  toggleBtns(true, [btnMembers, btnPosts]);
+
   setTimeout(() => {
     btnCreatePost.classList.add("show__model");
     welcomeMessage.classList.add("hide");
@@ -261,6 +270,8 @@ const renderPosts = function () {
       </div>`;
     })
     .join("");
+
+  toggleModel(modelPosts, [form, modelMember, modelLogin, modelSignup]);
 };
 
 const generateAvatar = function () {
@@ -273,6 +284,15 @@ const generateAvatar = function () {
     .split("")[0]
     .toUpperCase();
 };
+
+// listen form input
+form.querySelector("textarea").addEventListener("input", function (e) {
+  if (this.value.trim() === "") {
+    btnSubmitPost.classList.add("hidden__btn");
+    return;
+  }
+  btnSubmitPost.classList.remove("hidden__btn");
+});
 
 // form
 btnSubmitPost.addEventListener("click", function () {
@@ -298,6 +318,10 @@ btnSubmitPost.addEventListener("click", function () {
     });
   }
 
+  // re render posts after 8s
+  setTimeout(() => renderPosts(), 800);
+
   form.querySelector("textarea").value = "";
   form.classList.remove("show__model");
+  btnSubmitPost.classList.add("hidden__btn");
 });
