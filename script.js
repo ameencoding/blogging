@@ -55,6 +55,7 @@ const members = [
 const membersPosts = [];
 
 btnPosts.addEventListener("click", function () {
+  btnCreatePost.classList.add("show__model");
   if (!isLogged) return;
   if (!membersPosts.length) {
     toggleModel(empty, [form, modelMember, modelLogin, modelSignup]);
@@ -66,6 +67,7 @@ btnPosts.addEventListener("click", function () {
 });
 
 btnMembers.addEventListener("click", function () {
+  btnCreatePost.classList.add("show__model");
   if (!isLogged) return;
   toggleModel(modelMember, [empty, form, modelPosts, modelLogin, modelSignup]);
 
@@ -95,6 +97,7 @@ btnLogin.addEventListener("click", function () {
 
 btnCreatePost.addEventListener("click", function () {
   toggleModel(form, [empty, modelLogin, modelPosts, modelMember, modelSignup]);
+  this.classList.remove("show__model");
 });
 
 btnSubmit.addEventListener("click", function () {
@@ -244,34 +247,75 @@ const renderPosts = function () {
   modelPosts.innerHTML = membersPosts
     .map((post) => {
       return `<div class="post">
-         <div class="icon"></div>
-         <div class="author">
-          <p class="author__name">${post.memberName}</p>
-          <p class="message">${post.post}</p>
-        </div>
-        <button class="btn edit">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#000000"
-            stroke-width="1"
-            stroke-linecap="round"
-            stroke-linejoin="bevel"
-          >
-            <path
-              d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"
-            ></path>
-            <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
-          </svg>
-        </button>
+            <div class="icon"></div>
+            <div class="author">
+              <p class="author__name">${post.memberName}</p>
+              <p class="message">${post.post}</p>
+              </div>
+              <button class="btn edit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#000000"
+                  stroke-width="1"
+                  stroke-linecap="round"
+                  stroke-linejoin="bevel"
+                >
+                  <path
+                  d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"
+                ></path>
+                <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+              </svg>
+            </button>
+            <span>${post.edited ? "Edited" : ""}</span>
       </div>`;
     })
     .join("");
 
   toggleModel(modelPosts, [form, modelMember, modelLogin, modelSignup]);
+
+  const btnsEdit = modelPosts.querySelectorAll(".post .edit");
+  let contents = modelPosts.querySelectorAll(".message");
+
+  let matchMsg;
+
+  btnsEdit.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const postHolder =
+        btn.parentElement.querySelector(".author__name").textContent;
+
+      if (postHolder !== currentUser) return;
+
+      matchMsg = membersPosts
+        .filter((m) => m.memberName === currentUser)
+        .map((msg) => msg.post);
+
+      btn.parentElement.querySelector(".message").contentEditable = true;
+      btn.parentElement.querySelector(".message").focus();
+    });
+
+    contents.forEach((content) => {
+      const currText = content.textContent;
+      content.addEventListener("keypress", function (key) {
+        if (key.code === "Enter") {
+          membersPosts
+            .filter((m) => m.memberName === currentUser)
+            .map((p) => {
+              if (p.post !== currText) return;
+              p.post = content.textContent;
+              p.edited = true;
+            });
+          content.parentElement.parentElement.querySelector(
+            "span"
+          ).textContent = "Edited";
+          content.contentEditable = false;
+        }
+      });
+    });
+  });
 };
 
 const generateAvatar = function () {
@@ -315,6 +359,7 @@ btnSubmitPost.addEventListener("click", function () {
       memberId: currentUserId,
       memberName: currentUser,
       post,
+      edited: false,
     });
   }
 
@@ -324,4 +369,5 @@ btnSubmitPost.addEventListener("click", function () {
   form.querySelector("textarea").value = "";
   form.classList.remove("show__model");
   btnSubmitPost.classList.add("hidden__btn");
+  btnCreatePost.classList.add("show__model");
 });

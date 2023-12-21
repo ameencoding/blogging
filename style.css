@@ -18,6 +18,7 @@
   --text--color-dark: #212529;
 
   --orange: #d67856;
+  --bg: linear-gradient(to top left, #d67856, #a99c2e);
 
   --light--color: #f8f9fa;
   --dark--light: #e9ecef;
@@ -29,7 +30,7 @@
 }
 
 body {
-  background-color: var(--orange);
+  background: var(--bg);
   font-family: "Roboto", sans-serif;
   height: 100vh;
   width: 100vw;
@@ -117,7 +118,7 @@ header {
 .model input {
   font-size: 13px;
   width: 100%;
-  padding: 5px 10px;
+  padding: 8px 10px;
   outline: none;
   border: 0.3px solid #545c6333;
   background-color: var(--light--color);
@@ -197,7 +198,7 @@ ul li:hover,
   height: 42px;
   width: 42px;
   border-radius: 50%;
-  background-color: var(--orange);
+  background: var(--orange);
 
   display: grid;
   place-content: center;
@@ -243,6 +244,7 @@ main {
 
   margin-top: 8px;
   cursor: pointer;
+  position: relative;
 }
 
 .post > div {
@@ -274,6 +276,16 @@ main {
   opacity: 75%;
 }
 
+.post > span {
+  font-size: 8px;
+  opacity: 75%;
+  color: var(--text--color-light);
+
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
 .form__create {
   background-color: #f1f3f5;
   width: fit-content;
@@ -297,7 +309,7 @@ main {
 }
 
 .form__create .btn {
-  background-color: var(--orange);
+  background: var(--bg);
   align-self: flex-end;
   padding: 4px 8px;
 
@@ -324,7 +336,7 @@ main {
 }
 
 .create__post {
-  background-color: var(--orange);
+  background: var(--bg);
   font-size: 14px;
   padding: 8px 18px;
 
